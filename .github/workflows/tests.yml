@@ -37,6 +37,9 @@ jobs:
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
 
+      # TODO: remove this, testing gh behaviour
+      - run: gh pr edit --add-label CI-published-commit-bottles ${{github.event.inputs.pull_request}}
+
       - run: brew test-bot --only-tap-syntax
 
       - run: brew test-bot --only-formulae-detect
@@ -258,7 +261,7 @@ jobs:
         with:
           workdir: ${{matrix.workdir || github.workspace}}
           result_path: bottles/steps_output.txt
-          step_name: 'Build summary on ${{ matrix.runner }}'
+          step_name: "Build summary on ${{ matrix.runner }}"
 
       - name: Output brew linkage result
         if: always()
@@ -266,8 +269,8 @@ jobs:
         with:
           workdir: ${{matrix.workdir || github.workspace}}
           result_path: bottles/linkage_output.txt
-          step_name: '`brew linkage` output on ${{ matrix.runner }}'
-          collapse: 'true'
+          step_name: "`brew linkage` output on ${{ matrix.runner }}"
+          collapse: "true"
 
       - name: Output brew bottle result
         if: always()
@@ -275,8 +278,8 @@ jobs:
         with:
           workdir: ${{matrix.workdir || github.workspace}}
           result_path: bottles/bottle_output.txt
-          step_name: '`brew bottle` output on ${{ matrix.runner }}'
-          collapse: 'true'
+          step_name: "`brew bottle` output on ${{ matrix.runner }}"
+          collapse: "true"
 
       - name: Run brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
         if: ${{(success() || failure()) && fromJson(needs.setup_tests.outputs.test-dependents)}}
@@ -290,8 +293,8 @@ jobs:
         with:
           workdir: ${{matrix.workdir || github.workspace}}
           result_path: bottles/steps_output.txt
-          step_name: 'Dependent summary on ${{ matrix.runner }}'
-          collapse: 'true'
+          step_name: "Dependent summary on ${{ matrix.runner }}"
+          collapse: "true"
 
       - name: Upload logs
         if: always()
