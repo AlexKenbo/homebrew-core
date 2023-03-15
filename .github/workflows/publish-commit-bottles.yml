@@ -30,6 +30,12 @@ jobs:
     container:
       image: ghcr.io/homebrew/ubuntu22.04:master
     steps:
+      - name: Enable PR automerge
+        run: gh pr merge --auto ${{github.event.inputs.pull_request}}
+
+      - name: Add CI-published-bottle-commits label
+        run: gh pr edit --add-label CI-published-bottle-commits ${{github.event.inputs.pull_request}}
+
       - name: Post comment once started
         uses: Homebrew/actions/post-comment@master
         with:
@@ -54,11 +60,6 @@ jobs:
 
       - name: Install gems
         run: brew install-bundler-gems
-
-      - name: Install skopeo and unzip for bottle upload
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y skopeo unzip
 
       - name: Configure Git user
         uses: Homebrew/actions/git-user-config@master
@@ -89,12 +90,6 @@ jobs:
           GIT_COMMITTER_NAME: BrewTestBot
           GIT_COMMITTER_EMAIL: 1589480+BrewTestBot@users.noreply.github.com
           HOMEBREW_GPG_PASSPHRASE: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY_PASSPHRASE }}
-
-      - name: Enable PR automerge
-        run: gh pr merge --auto ${{github.event.inputs.pull_request}}
-
-      - name: Add CI-published-bottle-commits label
-        run: gh pr edit --add-label CI-published-bottle-commits ${{github.event.inputs.pull_request}}
 
       - name: Post comment on failure
         if: ${{!success()}}
