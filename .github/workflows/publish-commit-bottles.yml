@@ -93,7 +93,7 @@ jobs:
       - name: Enable PR automerge
         run: gh pr merge --auto ${{github.event.inputs.pull_request}}
 
-      - name: Add CI-published-commit-bottles label
+      - name: Add CI-published-bottle-commits label
         run: gh pr edit --add-label CI-published-bottle-commits ${{github.event.inputs.pull_request}}
 
       - name: Post comment on failure

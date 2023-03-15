@@ -38,7 +38,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       # TODO: remove this, testing gh behaviour
-      - run: gh pr edit --add-label CI-published-commit-bottles ${{github.event.inputs.pull_request}}
+      - run: gh pr edit --add-label CI-published-bottle-commits ${{github.event.inputs.pull_request}}
 
       - run: brew test-bot --only-tap-syntax
 
